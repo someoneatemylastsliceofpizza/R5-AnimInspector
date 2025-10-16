@@ -3,6 +3,7 @@
 #include <mdl/qc.h>
 #include <string>
 #include <sstream>
+#include <cstdio>
 
 std::string getName(std::string anim_name) {
 	std::string name;
@@ -190,12 +191,12 @@ void readRseq_v7(const std::string in_dir, const std::vector<std::string>& paths
 		rseq_stream.read(buffer.data(), inputFileSize);
 
 		// bad size
-		if (inputFileSize <= sizeof(r5::v16::mstudioseqdesc_t)) {
+		if (inputFileSize <= sizeof(r5anim::v12::mstudioseqdesc_t)) {
 			printf("[!] Skipping %s (%zu byte)\n", getName(file).c_str(), inputFileSize);
 			continue;
 		}
 
-		auto* rseqDesc = reinterpret_cast<r5::v10::mstudioseqdesc_t*>(buffer.data());
+		auto* rseqDesc = reinterpret_cast<r5anim::v7::mstudioseqdesc_t*>(buffer.data());
 
 		std::string seq_name_raw = STRING_FROM_IDX(buffer.data(), rseqDesc->szlabelindex);
 		std::string seq_name = seq_name_raw.substr(0, seq_name_raw.rfind('.'));
@@ -203,7 +204,7 @@ void readRseq_v7(const std::string in_dir, const std::vector<std::string>& paths
 
 		qc::Sequence seq(seq_name, "");
 
-		auto* autolayers = PTR_FROM_IDX(r5::v10::mstudioautolayer_t, buffer.data(), rseqDesc->autolayerindex); //didn't test
+		auto* autolayers = PTR_FROM_IDX(r5anim::v7::mstudioautolayer_t, buffer.data(), rseqDesc->autolayerindex); //didn't test
 		for (int i = 0; i < rseqDesc->numautolayers; i++) {
 			__int64 guid = autolayers[i].guidSequence;
 			seq.autolayerGuid.push_back(guid);
@@ -215,7 +216,7 @@ void readRseq_v7(const std::string in_dir, const std::vector<std::string>& paths
 		seq.blendWidth = blendwidth;
 
 		for (int i = 0; i < rseqDesc->numblends; i++) {
-			auto* animDesc = PTR_FROM_IDX(r5::v10::mstudioanimdesc_t, buffer.data(), blend_idx[i]);
+			auto* animDesc = PTR_FROM_IDX(r5anim::v7::mstudioanimdesc_t, buffer.data(), blend_idx[i]);
 
 			num_frames = std::max(num_frames, animDesc->numframes - 1);
 			fps = std::max(fps, animDesc->fps);
@@ -241,20 +242,20 @@ void readRseq_v7(const std::string in_dir, const std::vector<std::string>& paths
 
 			qc::Animation rawAnim(raw_name, animFile, animDesc->fps, animDesc->numframes);
 
-			auto* ikrule = PTR_FROM_IDX(r5::v10::mstudioikrule_t, animDesc, animDesc->ikruleindex);
+			auto* ikrule = PTR_FROM_IDX(r5anim::v7::mstudioikrule_t, animDesc, animDesc->ikruleindex);
 			for (int j = 0; j < animDesc->numikrules; j++) {
 				rawAnim.ikrules.push_back({ ikrule[j].index });
 			}
 
 			if (animDesc->movementindex) {
-				auto* movement = PTR_FROM_IDX(r5::v10::mstudiomovement_t, animDesc, animDesc->movementindex);
+				auto* movement = PTR_FROM_IDX(r5anim::v7::mstudiomovement_t, animDesc, animDesc->movementindex);
 				for (int j = 0; j < animDesc->nummovements; j++) {
 					rawAnim.movement.push_back({ movement->v_start, movement->v_end });
 				}
 			}
 
 			if (animDesc->framemovementindex) {
-				auto* movement = PTR_FROM_IDX(r5::v10::mstudioframemovement_t, animDesc, animDesc->framemovementindex);
+				auto* movement = PTR_FROM_IDX(r5anim::v7::mstudioframemovement_t, animDesc, animDesc->framemovementindex);
 				rawAnim.framemovement = { movement->sectionFrames };
 			}
 
@@ -272,7 +273,7 @@ void readRseq_v7(const std::string in_dir, const std::vector<std::string>& paths
 			seq.activityWeight = rseqDesc->actweight;
 		}
 
-		auto* activityMods = PTR_FROM_IDX(r5::v10::mstudioactivitymodifier_t, buffer.data(), rseqDesc->activitymodifierindex);
+		auto* activityMods = PTR_FROM_IDX(r5anim::v7::mstudioactivitymodifier_t, buffer.data(), rseqDesc->activitymodifierindex);
 		for (int i = 0; i < rseqDesc->numactivitymodifiers; i++) {
 			std::string mod = STRING_FROM_IDX(&activityMods[i], activityMods[i].sznameindex);
 			if (activityMods[i].negate) mod += "_1";
@@ -295,7 +296,7 @@ void readRseq_v7(const std::string in_dir, const std::vector<std::string>& paths
 		}
 
 		// Events
-		auto* events = PTR_FROM_IDX(r5::v10::mstudioevent_t, buffer.data(), rseqDesc->eventindex);
+		auto* events = PTR_FROM_IDX(r5anim::v7::mstudioevent_t, buffer.data(), rseqDesc->eventindex);
 		for (int i = 0; i < rseqDesc->numevents; i++) {
 			std::string eventName = STRING_FROM_IDX(&events[i], events[i].szeventindex);
 			std::string eventOption = events[i].options;
@@ -374,12 +375,12 @@ void readRseq_v12(const std::string in_dir, const std::vector<std::string>& path
 		rseq_stream.read(buffer.data(), inputFileSize);
 
 		// bad size
-		if (inputFileSize <= sizeof(r5::v16::mstudioseqdesc_t)) {
+		if (inputFileSize <= sizeof(r5anim::v12::mstudioseqdesc_t)) {
 			printf("[!] Skipping %s (%zu byte)\n", getName(file).c_str(), inputFileSize);
 			continue;
 		}
 
-		auto* rseqDesc = reinterpret_cast<r5::v16::mstudioseqdesc_t*>(buffer.data());
+		auto* rseqDesc = reinterpret_cast<r5anim::v12::mstudioseqdesc_t*>(buffer.data());
 
 		std::string seq_name_raw = STRING_FROM_IDX(buffer.data(), rseqDesc->szlabelindex);
 		std::string seq_name = seq_name_raw.substr(0, seq_name_raw.rfind('.'));
@@ -404,7 +405,7 @@ void readRseq_v12(const std::string in_dir, const std::vector<std::string>& path
 		}
 
 
-		auto* autolayers = PTR_FROM_IDX(r5::v10::mstudioautolayer_t, buffer.data(), rseqDesc->autolayerindex);
+		auto* autolayers = PTR_FROM_IDX(r5anim::v7::mstudioautolayer_t, buffer.data(), rseqDesc->autolayerindex);
 		for (int i = 0; i < rseqDesc->numautolayers; i++) {
 			auto guid = autolayers[i].guidSequence;
 			seq.autolayerGuid.push_back(guid);
@@ -416,7 +417,7 @@ void readRseq_v12(const std::string in_dir, const std::vector<std::string>& path
 		seq.blendWidth = blendwidth;
 
 		for (int i = 0; i < rseqDesc->numblends; i++) {
-			auto* animDesc = PTR_FROM_IDX(r5::v16::mstudioanimdesc_t, buffer.data(), blend_idx[i]);
+			auto* animDesc = PTR_FROM_IDX(r5anim::v12::mstudioanimdesc_t, buffer.data(), blend_idx[i]);
 
 			num_frames = std::max(num_frames, animDesc->numframes - 1);
 			fps = std::max(fps, animDesc->fps);
@@ -458,7 +459,7 @@ void readRseq_v12(const std::string in_dir, const std::vector<std::string>& path
 			}
 
 			if (animDesc->framemovementindex) {
-				auto* movement = PTR_FROM_IDX(r5::v10::mstudioframemovement_t, animDesc, animDesc->framemovementindex);
+				auto* movement = PTR_FROM_IDX(r5anim::v7::mstudioframemovement_t, animDesc, animDesc->framemovementindex);
 				rawAnim.framemovement = { movement->sectionFrames };
 			}
 
@@ -477,7 +478,7 @@ void readRseq_v12(const std::string in_dir, const std::vector<std::string>& path
 			seq.activityWeight = rseqDesc->actweight;
 		}
 
-		auto* activityMods = PTR_FROM_IDX(r5::v16::mstudioactivitymodifier_t, buffer.data(), rseqDesc->activitymodifierindex);
+		auto* activityMods = PTR_FROM_IDX(r5anim::v12::mstudioactivitymodifier_t, buffer.data(), rseqDesc->activitymodifierindex);
 		for (int i = 0; i < rseqDesc->numactivitymodifiers; i++) {
 			std::string mod = STRING_FROM_IDX(&activityMods[i], activityMods[i].sznameindex);
 			if (activityMods[i].negate) mod += "_1";
@@ -500,7 +501,7 @@ void readRseq_v12(const std::string in_dir, const std::vector<std::string>& path
 		}
 
 		// Events
-		auto* events = PTR_FROM_IDX(r5::v16::mstudioevent_t, buffer.data(), rseqDesc->eventindex);
+		auto* events = PTR_FROM_IDX(r5anim::v12::mstudioevent_t, buffer.data(), rseqDesc->eventindex);
 		for (int i = 0; i < rseqDesc->numevents; i++) {
 			std::string eventName = STRING_FROM_IDX(&events[i], events[i].szeventindex);
 			std::string eventOption = STRING_FROM_IDX(&events[i], events[i].szoptionsindex); //events[i].options;
@@ -528,49 +529,181 @@ void readRseq_v12(const std::string in_dir, const std::vector<std::string>& path
 		else if ((entrynode != exitnode) && (exitnode == 0)) {
 			seq.AddExitNode(entrynode);
 		}
-		 
-		//if ((entrynode != exitnode) && (entrynode != 0) && (exitnode != 0)) {
-		//	std::string entryNode, exitNode;
-		//	if (hasNodeEntryData && hasNodeExitData) {
-		//		entryNode = (entrynode == 0) ? "" : modelOut.nodename.at(entrynode - 1);
-		//		exitNode = (exitnode == 0) ? "" : modelOut.nodename.at(exitnode - 1);
-		//	}
-		//	else {
-		//		entryNode = "ENTRYNODE_" + std::to_string(entrynode);
-		//		exitNode = "EXITNODE_" + std::to_string(exitnode);
-		//	}
-		//	seq.AddTransition(entryNode, exitNode);
-		//}
-		//else if ((entrynode == exitnode) && (entrynode != 0)) {
-		//	std::string nodeName;
-		//	if (hasNodeEntryData) {
-		//		nodeName = modelOut.nodename.at(entrynode - 1);
-		//	}
-		//	else {
-		//		nodeName = "NODE_" + std::to_string(entrynode);
-		//	}
-		//	seq.AddNode(nodeName);
-		//}
-		//else if ((entrynode != exitnode) && (entrynode == 0)) {
-		//	std::string nodeName;
-		//	if (hasNodeExitData) {
-		//		nodeName = modelOut.nodename.at(exitnode - 1);
-		//	}
-		//	else {
-		//		nodeName = "NODE_" + std::to_string(exitnode);
-		//	}
-		//	seq.AddEntryNode(nodeName);
-		//}
-		//else if ((entrynode != exitnode) && (exitnode == 0)) {
-		//	std::string nodeName;
-		//	if (hasNodeEntryData) {
-		//		nodeName = modelOut.nodename.at(entrynode - 1);
-		//	}
-		//	else {
-		//		nodeName = "NODE_" + std::to_string(entrynode);
-		//	}
-		//	seq.AddExitNode(nodeName);
-		//}
+
+		modelOut.AddSequence(seq);
+
+		num_frames = 0;
+		fps = 0;
+	}
+}
+
+
+void readRseq_v121(const std::string in_dir, const std::vector<std::string>& paths, qc::QCModel& modelOut) {
+	int num_frames = 0;
+	float fps = 0;
+
+	for (const auto& file : paths) {
+		size_t inputFileSize = std::filesystem::file_size(file);
+		std::ifstream rseq_stream(file, std::ios::binary);
+		std::vector<char> buffer(inputFileSize);
+		rseq_stream.read(buffer.data(), inputFileSize);
+
+		// bad size
+		if (inputFileSize <= sizeof(r5anim::v12::mstudioseqdesc_t)) {
+			printf("[!] Skipping %s (%zu byte)\n", getName(file).c_str(), inputFileSize);
+			continue;
+		}
+
+		auto* rseqDesc = reinterpret_cast<r5anim::v12::mstudioseqdesc_t*>(buffer.data());
+
+		std::string seq_name_raw = STRING_FROM_IDX(buffer.data(), rseqDesc->szlabelindex);
+		std::string seq_name = seq_name_raw.substr(0, seq_name_raw.rfind('.'));
+		std::string seq_act = STRING_FROM_IDX(buffer.data(), rseqDesc->szactivitynameindex);
+
+		qc::Sequence seq(seq_name, "");
+		int numbones = (rseqDesc->activitymodifierindex - rseqDesc->weightlistindex) / 4;
+
+		if (rseqDesc->weightlistindex >= rseqDesc->autolayerindex) {
+			std::vector<float> weightlist{};
+			int numHasValue = 0;
+			float* weight = PTR_FROM_IDX(float, buffer.data(), rseqDesc->weightlistindex);
+			for (int i = 0; i < numbones; i++) {
+				weightlist.push_back(weight[i]);
+				if (weight[i] != 1) {
+					numHasValue++;
+				}
+			}
+			if (numHasValue != numbones) {
+				seq.weightlistIdx = modelOut.AddWeightlist(weightlist);
+			}
+		}
+
+
+		auto* autolayers = PTR_FROM_IDX(r5anim::v7::mstudioautolayer_t, buffer.data(), rseqDesc->autolayerindex);
+		for (int i = 0; i < rseqDesc->numautolayers; i++) {
+			auto guid = autolayers[i].guidSequence;
+			seq.autolayerGuid.push_back(guid);
+		}
+
+		auto* blend_idx = PTR_FROM_IDX(short, buffer.data(), rseqDesc->animindexindex);
+		uint32_t blendwidth = std::max(rseqDesc->groupsize[0], rseqDesc->groupsize[1]);
+
+		seq.blendWidth = blendwidth;
+
+		for (int i = 0; i < rseqDesc->numblends; i++) {
+			auto* animDesc = PTR_FROM_IDX(r5anim::v121::mstudioanimdesc_t, buffer.data(), blend_idx[i]);
+
+			num_frames = std::max(num_frames, animDesc->numframes - 1);
+			fps = std::max(fps, animDesc->fps);
+
+			std::string anim_name;
+
+			int base = (char*)animDesc - buffer.data();
+			if (animDesc->animDataAsset == 0) {
+				anim_name = "zeroanim";
+			} else if ((base + SHIFT_IF_ODD(animDesc->sznameindex) < inputFileSize)) {
+				anim_name = STRING_FROM_IDX(animDesc, SHIFT_IF_ODD(animDesc->sznameindex));
+			} else {
+				anim_name = "Error";
+			}
+
+			std::string raw_name = getName(anim_name);
+			std::string animFile;
+
+			std::string n = anim_name;
+			std::filesystem::path p(n);
+			std::filesystem::path s(seq_name);
+			std::filesystem::path rp = std::filesystem::relative(file, in_dir);
+			std::string f = s.begin()->string();
+			raw_name = f + "_" + raw_name;
+
+			if (s.has_parent_path()) {
+				animFile = rp.parent_path().string() + "\\" + p.stem().string();
+			}
+			else {
+				animFile = "anims/" + p.stem().string();
+			}
+			animFile += ".smd";
+
+			qc::Animation rawAnim(raw_name, animFile, animDesc->fps, animDesc->numframes);
+
+			//auto* ikrule = PTR_FROM_IDX(r5::v12::mstudioikrule_t, animDesc, animDesc->ikruleindex);
+			for (int j = 0; j < animDesc->numikrules; j++) {
+				rawAnim.ikrules.push_back({ 0 }); //ikrule[j].index
+			}
+
+			if (animDesc->framemovementindex) {
+				auto* movement = PTR_FROM_IDX(r5anim::v7::mstudioframemovement_t, animDesc, animDesc->framemovementindex);
+				rawAnim.framemovement = { movement->sectionFrames };
+			}
+
+			seq.AddAnimation(raw_name);
+			modelOut.AddAnimation(rawAnim);
+
+		}
+		//printf("\n");
+		if (rseqDesc->flags & 0x1) seq.loop = true;
+		if (rseqDesc->flags & 0x4) seq.delta = true;
+
+		seq.fadeIn = rseqDesc->fadeintime;
+		seq.fadeOut = rseqDesc->fadeouttime;
+
+		if (!seq_act.empty()) {
+			seq.activity = seq_act;
+			seq.activityWeight = rseqDesc->actweight;
+		}
+
+		auto* activityMods = PTR_FROM_IDX(r5anim::v12::mstudioactivitymodifier_t, buffer.data(), rseqDesc->activitymodifierindex);
+		for (int i = 0; i < rseqDesc->numactivitymodifiers; i++) {
+			std::string mod = STRING_FROM_IDX(&activityMods[i], activityMods[i].sznameindex);
+			if (activityMods[i].negate) mod += "_1";
+			seq.AddActivityModifier(mod);
+		}
+
+		if (blendwidth > 1) {
+			for (int i = 0; i < 2; i++) {
+				if (rseqDesc->paramindex[i] != -1) {
+					std::string paramName;
+					if (modelOut.poseparam.size() > i) {
+						paramName = modelOut.poseparam.at(rseqDesc->paramindex[i]).name;
+					}
+					else {
+						paramName = "POSEPARAM_" + std::to_string(rseqDesc->paramindex[i]);
+					}
+					seq.blendkeys.push_back({ paramName,rseqDesc->paramstart[i],rseqDesc->paramend[i] });
+				}
+			}
+		}
+
+		// Events
+		auto* events = PTR_FROM_IDX(r5anim::v12::mstudioevent_t, buffer.data(), rseqDesc->eventindex);
+		for (int i = 0; i < rseqDesc->numevents; i++) {
+			std::string eventName = STRING_FROM_IDX(&events[i], events[i].szeventindex);
+			std::string eventOption = STRING_FROM_IDX(&events[i], events[i].szoptionsindex); //events[i].options;
+			int frame = static_cast<int>(events[i].cycle * num_frames);
+
+			std::stringstream ss;
+			ss << eventName << " " << frame << " \"" << eventOption << "\"";
+			temp::event_t event(frame, eventName, eventOption);
+			seq.AddEvent(event);
+		}
+
+		// Nodes / Transitions
+		short entrynode = rseqDesc->localentrynode;
+		short exitnode = rseqDesc->localexitnode;
+
+		if ((entrynode != exitnode) && (entrynode != 0) && (exitnode != 0)) {
+			seq.AddTransition(entrynode, exitnode);
+		}
+		else if ((entrynode == exitnode) && (entrynode != 0)) {
+			seq.AddSeqNode(entrynode);
+		}
+		else if ((entrynode != exitnode) && (entrynode == 0)) {
+			seq.AddEntryNode(exitnode);
+		}
+		else if ((entrynode != exitnode) && (exitnode == 0)) {
+			seq.AddExitNode(entrynode);
+		}
 
 		modelOut.AddSequence(seq);
 

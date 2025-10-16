@@ -457,24 +457,26 @@ namespace qc
 
 				if (seq.exitnode) {
 					auto it = nodes.find(seq.exitnode);
-					out << "\t//transition 0 ";
+					out << "\tnode ";
 					if (it != nodes.end()) {
-						out << it->second << "\n";
+						out << it->second;
 					}
 					else {
-						out << "NODE_" << seq.exitnode << "\n";
+						out << "NODE_" << seq.exitnode;
 					}
+					out << " //this might be wrong!\n";
 				}
 
 				if (seq.entrynode) {
 					auto it = nodes.find(seq.entrynode);
-					out << "\t//transition ";
+					out << "\tnode ";
 					if (it != nodes.end()) {
-						out << it->second << " 0\n";
+						out << it->second;
 					}
 					else {
-						out << "NODE_" << seq.entrynode << " 0\n";
+						out << "NODE_" << seq.entrynode;
 					}
+					out << " //this might be wrong!\n";
 				}
 
 				out << "}\n\n";
@@ -498,3 +500,4 @@ void readRrig_v16(std::string path, qc::QCModel& modelOut);
 void readRmdl_v16(std::string path, qc::QCModel& modelOut);
 void readRseq_v12(const std::string in_dir, const std::vector<std::string>& paths, qc::QCModel& modelOut);
 //
+void readRseq_v121(const std::string in_dir, const std::vector<std::string>& paths, qc::QCModel& modelOut);

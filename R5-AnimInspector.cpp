@@ -25,6 +25,13 @@ void getRseqPaths(std::filesystem::directory_entry dir, std::vector<std::string>
     }
 }
 
+const static std::vector<std::string> rseq_supported_versions = {
+    "7",
+    "7.1",
+    "12",
+    "12.1"
+};
+
 int main(int argc, char* argv[]) {
     std::string rseq_dir;
     std::string rrig_path;
@@ -144,33 +151,53 @@ int main(int argc, char* argv[]) {
     switch (version) {
     case 7:
         switch (sub_version) {
+        case 0:
+            if (!rrig_path.empty()) readRrig_v10(rrig_path, modelOut);
+            if (!rmdl_path.empty()) readRmdl_v10(rmdl_path, modelOut);
+            if (!rseq_paths.empty()) readRseq_v7(in_dir, rseq_paths, modelOut);
+            break;
         case 1:
             if (!rrig_path.empty()) readRrig_v13(rrig_path, modelOut);
             if (!rmdl_path.empty()) readRmdl_v121(rmdl_path, modelOut);
             if (!rseq_paths.empty()) readRseq_v7(in_dir, rseq_paths, modelOut);
             break;
         default:
-            if (!rrig_path.empty()) readRrig_v10(rrig_path, modelOut);
-            if (!rmdl_path.empty()) readRmdl_v10(rmdl_path, modelOut);
-            if (!rseq_paths.empty()) readRseq_v7(in_dir, rseq_paths, modelOut);
-            break;
+            goto NOTSUPPORT;
         }
         break;
     case 12:
-        if (!rrig_path.empty()) readRrig_v16(rrig_path, modelOut);
-        if (!rmdl_path.empty()) readRmdl_v16(rmdl_path, modelOut);
-        if (!rseq_paths.empty()) readRseq_v12(in_dir, rseq_paths, modelOut);
+        switch (sub_version) {
+        case 0:
+            if (!rrig_path.empty()) readRrig_v16(rrig_path, modelOut);
+            if (!rmdl_path.empty()) readRmdl_v16(rmdl_path, modelOut);
+            if (!rseq_paths.empty()) readRseq_v12(in_dir, rseq_paths, modelOut);
+            break;
+        case 1:
+            if (!rrig_path.empty()) readRrig_v16(rrig_path, modelOut);
+            if (!rmdl_path.empty()) readRmdl_v16(rmdl_path, modelOut);
+            if (!rseq_paths.empty()) readRseq_v121(in_dir, rseq_paths, modelOut);
+            break;
+        default:
+            goto NOTSUPPORT;
+        }
         break;
+NOTSUPPORT:
     default:
-        std::cerr << "Unsupported version: " << version;
+        std::cerr << "Rseq v" << version;
         if (sub_version != 0) std::cerr << "." << sub_version;
-        std::cerr << std::endl;
+        std::cerr << " is not supported yet." << std::endl;
+
+        std::cerr << "Supported rseq versions: ";
+        for (size_t i = 0; i < rseq_supported_versions.size(); ++i) {
+            std::cerr << rseq_supported_versions[i];
+            if (i != rseq_supported_versions.size() - 1) std::cerr << ", ";
+        }
         return 1;
     }
 
     modelOut.SortSequences();
     modelOut.Write();
 
-    printf("\[Success] %s", out_path.c_str());
+    printf("\[Succeeded] %s", out_path.c_str());
     return 0;
 }

@@ -5,13 +5,11 @@
 
 #define STRING_FROM_IDX(base, idx) reinterpret_cast<const char*>((char*)base + idx)
 #define PTR_FROM_IDX(type, base, idx) reinterpret_cast<type*>((char*)base + idx)
+#define SHIFT_IF_ODD(x) ((x & 0xFFFE) << (4 * (x & 1)))
 
 #define ALIGN2( a ) a = (byte *)((__int64)((byte *)a + 1) & ~ 1)
 #define ALIGN4( a ) a = (byte *)((__int64)((byte *)a + 3) & ~ 3)
 #define ALIGN16( a ) a = (byte *)((__int64)((byte *)a + 15) & ~ 15)
-
-#define MAX(a,b) ((a > b) ? a : b)
-#define MIN(a,b) ((a < b) ? a : b)
 
 #define M_PI 3.14159265358979323846f
 
@@ -97,11 +95,11 @@ struct Vector3{
 	}
 
     inline float Min() {
-		return MIN(x, MIN(y, z));
+		return std::min({ x, y, z });
     }
 
 	inline float Max() {
-		return MAX(x, MAX(y, z));
+		return std::max({ x, y, z });
 	}
 
 	inline float Get(int xyz) {
