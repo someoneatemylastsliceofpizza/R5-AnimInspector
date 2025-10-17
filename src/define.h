@@ -5,7 +5,7 @@
 
 #define STRING_FROM_IDX(base, idx) reinterpret_cast<const char*>((char*)base + idx)
 #define PTR_FROM_IDX(type, base, idx) reinterpret_cast<type*>((char*)base + idx)
-#define SHIFT_IF_ODD(x) ((x & 0xFFFE) << (4 * (x & 1)))
+#define SHIFT_IF_ODD(x) static_cast<uint16_t>((x & 0xFFFE) << (4 * (x & 1)))
 
 #define ALIGN2( a ) a = (byte *)((__int64)((byte *)a + 1) & ~ 1)
 #define ALIGN4( a ) a = (byte *)((__int64)((byte *)a + 3) & ~ 3)
