@@ -723,6 +723,10 @@ void readRmdl_v10(std::string path, qc::QCModel& modelOut) {
 
 	auto* rmdlHdr = reinterpret_cast<r5::v10::studiohdr_t*>(buffer);
 	modelOut.modelname = STRING_FROM_IDX(rmdlHdr, rmdlHdr->sznameindex);
+	modelOut.cboxmin = rmdlHdr->hull_min;
+	modelOut.cboxmax = rmdlHdr->hull_max;
+	modelOut.bboxmin = rmdlHdr->view_bbmin;
+	modelOut.bboxmax = rmdlHdr->view_bbmax;
 
 	auto* bones = PTR_FROM_IDX(r5::v10::mstudiobone_t, rmdlHdr, rmdlHdr->boneindex);
 	auto* attachments = PTR_FROM_IDX(r5::v10::mstudioattachment_t, rmdlHdr, rmdlHdr->localattachmentindex);
@@ -765,6 +769,10 @@ void readRmdl_v121(std::string path, qc::QCModel& modelOut) {
 
 	auto* rmdlHdr = reinterpret_cast<r5::v121::studiohdr_t*>(buffer);
 	modelOut.modelname = STRING_FROM_IDX(rmdlHdr, rmdlHdr->sznameindex);
+	modelOut.cboxmin = rmdlHdr->hull_min;
+	modelOut.cboxmax = rmdlHdr->hull_max;
+	modelOut.bboxmin = rmdlHdr->view_bbmin;
+	modelOut.bboxmax = rmdlHdr->view_bbmax;
 
 	auto* bones = PTR_FROM_IDX(r5::v121::mstudiobone_t, rmdlHdr, rmdlHdr->boneindex);
 	auto* attachments = PTR_FROM_IDX(r5::v10::mstudioattachment_t, rmdlHdr, rmdlHdr->localattachmentindex);
@@ -805,6 +813,10 @@ void readRmdl_v16(std::string path, qc::QCModel& modelOut) {
 
 	r5::v16::studiohdr_t* rmdlHdr = reinterpret_cast<r5::v16::studiohdr_t*>(buffer);
 	modelOut.modelname = STRING_FROM_IDX(rmdlHdr, rmdlHdr->sznameindex);
+	modelOut.cboxmin = rmdlHdr->hull_min;
+	modelOut.cboxmax = rmdlHdr->hull_max;
+	modelOut.bboxmin = rmdlHdr->view_bbmin;
+	modelOut.bboxmax = rmdlHdr->view_bbmax;
 
 	auto* bones = PTR_FROM_IDX(r5::v16::mstudiobone_t, rmdlHdr, rmdlHdr->boneindex);
 	auto* attachments = PTR_FROM_IDX(r5::v16::mstudioattachment_t, rmdlHdr, rmdlHdr->localattachmentindex);
