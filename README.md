@@ -15,8 +15,8 @@ R5-AnimInspector.exe <parent directory> [-v <.rseq version>]
 > S26 (-v 12.1)
 
 >**Folder Structure**\
->├── model.rrig         # Rig file (must be in parent directory)\
->├── model.rmdl         # Model file (must be in parent directory)\
+>├── model.rrig         # Rig file (Optional) (must be in parent directory)\
+>├── model.rmdl         # Model file (Optional) (must be in parent directory)\
 >└── path/
 >> └── to/
 >>> └── rseq/
