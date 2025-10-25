@@ -9,7 +9,7 @@ A Source .qc generator from Apex legends animation file(.rseq, .rrig and .rmdl)
 R5-AnimInspector.exe <parent directory> [-v <.rseq version>]
 ```
 
->**Versions**
+>**Versions**\
 > S3 (-v 7)\
 > S25 (-v 12)\
 > S26 (-v 12.1)
