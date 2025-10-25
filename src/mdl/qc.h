@@ -66,8 +66,7 @@ namespace qc
 		int entrynode;
 		std::vector<poseparamkey> blendkeys;
 		int blendWidth = 0;
-		Sequence(const std::string& name, const std::string& smdFile)
-			: name(name) {
+		Sequence(const std::string& name, const std::string& smdFile) : name(name) {
 		}
 
 		void AddEvent(const temp::event_t& e) {
@@ -171,7 +170,7 @@ namespace qc
 			for (const auto& anim : animations) {
 				if (anim.name == a.name) {
 					if (anim.smdFile != a.smdFile) {
-						printf("Boom! \n%s\n --> %s\n --> %s\n", anim.name.c_str(), anim.smdFile.c_str(), a.smdFile.c_str());
+						printf("Found Duplicate Animation! \n%s\n --> %s\n --> %s\n", anim.name.c_str(), anim.smdFile.c_str(), a.smdFile.c_str());
 					}
 					return;
 				}
@@ -291,6 +290,11 @@ namespace qc
 			if (!bodyparts.empty()) out << "\n";
 
 			if (hasRrig) {
+
+				// max bones
+				int numbones = bones.size();
+				if (numbones > 127) out << "$maxbones " << numbones + 1 << "\n\n";
+
 				// illumposition
 				out << "$illumposition "
 					<< std::fixed << std::setprecision(6)
@@ -305,7 +309,6 @@ namespace qc
 				out << "$bbox "
 					<< bboxmin.x << " " << bboxmin.y << " " << bboxmin.z << " "
 					<< bboxmax.x << " " << bboxmax.y << " " << bboxmax.z << "\n\n";
-
 
 				// TODO: hboxset bboxes
 				 
@@ -457,7 +460,7 @@ namespace qc
 
 				if (seq.exitnode) {
 					auto it = nodes.find(seq.exitnode);
-					out << "\tnode ";
+					out << "\ttransition NODE_IGNORE ";
 					if (it != nodes.end()) {
 						out << it->second;
 					}
@@ -469,15 +472,39 @@ namespace qc
 
 				if (seq.entrynode) {
 					auto it = nodes.find(seq.entrynode);
-					out << "\tnode ";
+					out << "\ttransition ";
 					if (it != nodes.end()) {
-						out << it->second;
+						out << it->second << " NODE_IGNORE";
 					}
 					else {
-						out << "NODE_" << seq.entrynode;
+						out << "NODE_" << seq.entrynode << " NODE_IGNORE";
 					}
 					out << " //this might be wrong!\n";
 				}
+
+				//if (seq.exitnode) {
+				//	auto it = nodes.find(seq.exitnode);
+				//	out << "\tnode ";
+				//	if (it != nodes.end()) {
+				//		out << it->second;
+				//	}
+				//	else {
+				//		out << "NODE_" << seq.exitnode;
+				//	}
+				//	out << " //this might be wrong!\n";
+				//}
+
+				//if (seq.entrynode) {
+				//	auto it = nodes.find(seq.entrynode);
+				//	out << "\tnode ";
+				//	if (it != nodes.end()) {
+				//		out << it->second;
+				//	}
+				//	else {
+				//		out << "NODE_" << seq.entrynode;
+				//	}
+				//	out << " //this might be wrong!\n";
+				//}
 
 				out << "}\n\n";
 			}
