@@ -1,5 +1,5 @@
 # R5-AnimInspector
-A Source .qc generator from Apex legends animation file(.rseq, .rrig and .rmdl)
+A Source .qc generator from Apex legends assets file(.rseq, .rrig and .rmdl)
 
 ---
 
@@ -20,5 +20,5 @@ R5-AnimInspector.exe <parent directory> [-v <.rseq version>]
 >└── path/
 >> └── to/
 >>> └── rseq/
->>>>> ├── *.rseq  # Animation sequences (can be anywhere)\
->>>>> ├── ...
+>>>> ├── *.rseq  # Animation sequences (can be anywhere)\
+>>>> ├── ...
