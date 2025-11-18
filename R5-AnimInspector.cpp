@@ -87,7 +87,7 @@ int main(int argc, char* argv[]) {
     }
 
     if ((rmdl_path.empty() && rrig_path.empty() && rseq_dir.empty()) && argc < 2) {
-        std::cerr << "Usage: " << argv[0] << " <parent directory> or [-rseq rseq_directory] [-rrig rrig_path.rrig] [-rmdl rmdl_path.rmdl] [-v version[.subversion]]\n";
+        std::cerr << "Usage: " << argv[0] << " <parent directory> or [-rseq rseq_directory] [-rrig rrig_path.rrig] [-rmdl rmdl_path.rmdl] [-i <in assets season>]\n";
         system("pause");
         return 1;
     }
