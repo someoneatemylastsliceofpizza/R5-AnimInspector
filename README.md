@@ -6,13 +6,11 @@ A Source .qc generator from Apex legends assets file(.rseq, .rrig and .rmdl)
 ### Usage
 
 ```bash
-R5-AnimInspector.exe <parent directory> [-v <.rseq version>]
+R5-AnimInspector.exe <parent directory> [-i <in assets season>]
 ```
 
->**Versions**\
-> S3 (-v 7)\
-> S25 (-v 12)\
-> S26 (-v 12.1)
+>**Supported seasons**\
+[ 3, 4, 25, 26, 27 ]
 
 >**Folder Structure**\
 >├── model.rrig         # Rig file (Optional) (must be in parent directory)\

@@ -328,7 +328,7 @@ namespace qc
 					out << "$poseparameter \"" << pp.name << "\" " << pp.flags << " "
 						<< pp.start << " " << pp.end;
 					if (pp.loop > 0.0f)
-						out << " loop " << pp.loop; // not sure about this
+						out << " loop " << pp.loop;
 					out << "\n";
 				}
 				if (!poseparam.empty()) out << "\n";
@@ -467,7 +467,7 @@ namespace qc
 					else {
 						out << "NODE_" << seq.exitnode;
 					}
-					out << " //this might be wrong!\n";
+					out << " \n";
 				}
 
 				if (seq.entrynode) {
@@ -479,32 +479,8 @@ namespace qc
 					else {
 						out << "NODE_" << seq.entrynode << " NODE_IGNORE";
 					}
-					out << " //this might be wrong!\n";
+					out << "\n";
 				}
-
-				//if (seq.exitnode) {
-				//	auto it = nodes.find(seq.exitnode);
-				//	out << "\tnode ";
-				//	if (it != nodes.end()) {
-				//		out << it->second;
-				//	}
-				//	else {
-				//		out << "NODE_" << seq.exitnode;
-				//	}
-				//	out << " //this might be wrong!\n";
-				//}
-
-				//if (seq.entrynode) {
-				//	auto it = nodes.find(seq.entrynode);
-				//	out << "\tnode ";
-				//	if (it != nodes.end()) {
-				//		out << it->second;
-				//	}
-				//	else {
-				//		out << "NODE_" << seq.entrynode;
-				//	}
-				//	out << " //this might be wrong!\n";
-				//}
 
 				out << "}\n\n";
 			}
