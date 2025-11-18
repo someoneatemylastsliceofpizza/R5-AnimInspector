@@ -423,7 +423,7 @@ void readRseq_v12(const std::string in_dir, const std::vector<std::string>& path
 			fps = std::max(fps, animDesc->fps);
 
 			std::string anim_name;
-			
+
 			// zeroanim
 			int base = (char*)animDesc - buffer.data();
 			if (base + animDesc->sznameindex >= inputFileSize) {
@@ -524,10 +524,10 @@ void readRseq_v12(const std::string in_dir, const std::vector<std::string>& path
 			seq.AddSeqNode(entrynode);
 		}
 		else if ((entrynode != exitnode) && (entrynode == 0)) {
-			seq.AddEntryNode(exitnode);
+			seq.AddExitNode(exitnode);
 		}
 		else if ((entrynode != exitnode) && (exitnode == 0)) {
-			seq.AddExitNode(entrynode);
+			seq.AddEntryNode(entrynode);
 		}
 
 		modelOut.AddSequence(seq);
@@ -593,6 +593,7 @@ void readRseq_v121(const std::string in_dir, const std::vector<std::string>& pat
 		for (int i = 0; i < rseqDesc->numblends; i++) {
 			auto* animDesc = PTR_FROM_IDX(r5anim::v121::mstudioanimdesc_t, buffer.data(), blend_idx[i]);
 
+
 			num_frames = std::max(num_frames, animDesc->numframes - 1);
 			fps = std::max(fps, animDesc->fps);
 
@@ -601,9 +602,11 @@ void readRseq_v121(const std::string in_dir, const std::vector<std::string>& pat
 			int base = (char*)animDesc - buffer.data();
 			if (animDesc->animDataAsset == 0) {
 				anim_name = "zeroanim";
-			} else if ((base + SHIFT_IF_ODD(animDesc->sznameindex) < inputFileSize)) {
+			}
+			else if ((base + SHIFT_IF_ODD(animDesc->sznameindex) < inputFileSize)) {
 				anim_name = STRING_FROM_IDX(animDesc, SHIFT_IF_ODD(animDesc->sznameindex));
-			} else {
+			}
+			else {
 				anim_name = "Error";
 			}
 
@@ -699,10 +702,10 @@ void readRseq_v121(const std::string in_dir, const std::vector<std::string>& pat
 			seq.AddSeqNode(entrynode);
 		}
 		else if ((entrynode != exitnode) && (entrynode == 0)) {
-			seq.AddEntryNode(exitnode);
+			seq.AddExitNode(exitnode);
 		}
 		else if ((entrynode != exitnode) && (exitnode == 0)) {
-			seq.AddExitNode(entrynode);
+			seq.AddEntryNode(entrynode);
 		}
 
 		modelOut.AddSequence(seq);
@@ -832,7 +835,7 @@ void readRmdl_v16(std::string path, qc::QCModel& modelOut) {
 		std::string name = STRING_FROM_IDX(&bodyparts[i], bodyparts[i].sznameindex);
 		auto* modeldesc = PTR_FROM_IDX(r5::v16::mstudiomodel_t, &bodyparts[i], bodyparts[i].modelindex);
 		int modelnameiter = 0;
-		for(int j = 0; j < bodyparts[i].nummodels; j++) {
+		for (int j = 0; j < bodyparts[i].nummodels; j++) {
 			std::string modelname = "";
 			if (modeldesc[j].nummeshes) {
 				modelname = name + "_" + std::to_string(modelnameiter);
