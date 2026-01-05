@@ -35,4 +35,6 @@ R5-AnimInspector
 x64
 x32
 .vs
+bin/
+bin-int/
 R5-AnimInspector.vcxproj.user

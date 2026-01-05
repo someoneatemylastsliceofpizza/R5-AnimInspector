@@ -17,7 +17,6 @@
 #define STUDIO_ANIMPTR_Y 0x02
 #define STUDIO_ANIMPTR_X 0x04
 
-
 namespace p2 {
 	struct mstudioanimsections_t
 	{
@@ -307,9 +306,9 @@ namespace p2 {
 	}
 }
 
-namespace r5{
+namespace r5 {
 	namespace v10 {
-		
+
 		struct mstudiotexture_t
 		{
 			int sznameindex;
@@ -329,7 +328,7 @@ namespace r5{
 		{
 			int sznameindex;
 			int flags;
-			int localbone; 
+			int localbone;
 			Matrix3x4_t localmatrix;
 		};
 
@@ -371,7 +370,7 @@ namespace r5{
 			int deprecated_numeyeballs;
 			int deprecated_eyeballindex;
 			int pad[4];
-			int colorindex; 
+			int colorindex;
 			int uv2index;
 		};
 
@@ -524,7 +523,7 @@ namespace r5{
 			int id;
 			int version;
 			int checksum;
-			int sznameindex ;
+			int sznameindex;
 			char name[64];
 			int length;
 			Vector3 eyeposition;
@@ -534,13 +533,13 @@ namespace r5{
 			Vector3 view_bbmin;
 			Vector3 view_bbmax;
 			int flags;
-			int numbones; 
+			int numbones;
 			int boneindex;
 			int numbonecontrollers;
 			int bonecontrollerindex;
 			int numhitboxsets;
 			int hitboxsetindex;
-			int numlocalanim; 
+			int numlocalanim;
 			int localanimindex;
 			int numlocalseq;
 			int	localseqindex;
@@ -593,7 +592,7 @@ namespace r5{
 			int vgLODIndex;
 			int numVGLODs;
 			float fadeDistance;
-			float gathersize; 
+			float gathersize;
 			float flVertAnimFixedPointScale;
 			int surfacepropLookup;
 			int sourceFilenameOffset;
@@ -607,7 +606,7 @@ namespace r5{
 			int unkstringindex;
 			int vtxindex;
 			int vvdindex;
-			int vvcindex; 
+			int vvcindex;
 			int vphyindex;
 			int vtxsize;
 			int vvdsize;
@@ -627,17 +626,17 @@ namespace r5{
 		struct mstudiomodel_t
 		{
 			char name[64];
-			int unkindex2; 
+			int unkindex2;
 			int type;
 			float boundingradius;
 			int nummeshes;
 			int meshindex;
 			int numvertices;
 			int vertexindex;
-			int tangentsindex; 
+			int tangentsindex;
 			int numattachments;
 			int attachmentindex;
-			int colorindex; 
+			int colorindex;
 			int uv2index;
 		};
 
@@ -656,10 +655,10 @@ namespace r5{
 			int proctype;
 			int procindex;
 			int physicsbone;
-			int surfacepropidx; 
+			int surfacepropidx;
 			int contents;
-			int surfacepropLookup; 
-			byte unkid; 
+			int surfacepropLookup;
+			byte unkid;
 			byte unk1[3];
 		};
 
@@ -773,9 +772,8 @@ namespace r5{
 	}
 
 	namespace v16 {
-		struct studiohdr_t
-		{
-			int flags ;
+		struct studiohdr_t {
+			int flags;
 			int checksum;
 			short sznameindex;
 			char name[32];
@@ -854,7 +852,7 @@ namespace r5{
 			float end;
 			float loop;
 		};
-		
+
 		struct mstudioattachment_t
 		{
 			short sznameindex;
@@ -881,6 +879,33 @@ namespace r5{
 			short sznameindex;
 		};
 
+		struct mstudiobonedata_t
+		{
+			Matrix3x4_t poseToBone;
+			Quaternion qAlignment;
+			Vector3 pos;
+			Quaternion quat;
+			RadianEuler rot;
+			Vector3 scale;
+			short parent;
+			uint16_t unk_76;
+			int flags;
+			uint8_t collisionIndex;
+			uint8_t proctype;
+			uint16_t procindex;
+		};
+
+		struct mstudiolinearbone_t
+		{
+			uint16_t numbones;
+			uint16_t flagsindex;
+			uint16_t parentindex;
+			uint16_t posindex;
+			uint16_t quatindex;
+			uint16_t rotindex;
+			uint16_t posetoboneindex;
+		};
+
 		struct mstudioikchain_t
 		{
 			unsigned short sznameindex;
@@ -901,6 +926,171 @@ namespace r5{
 			short posetoboneindex;
 		};
 	}
+	namespace v17 {
+		struct studiohdr_t {
+			int flags;
+			int checksum;
+			uint16_t sznameindex;
+			char name[33];
+			uint8_t surfacepropLookup;
+			float mass;
+			int contents;
+			uint16_t hitboxsetindex;
+			uint8_t numhitboxsets;
+			uint8_t illumpositionattachmentindex;
+			Vector3 illumposition;
+			Vector3 hull_min;
+			Vector3 hull_max;
+			Vector3 view_bbmin;
+			Vector3 view_bbmax;
+			uint16_t numbones;
+			uint16_t boneindex;
+			uint16_t bonedataindex;
+			uint16_t numlocalseq;
+			uint16_t localseqindex;
+			uint16_t unk_7E[2];
+			char activitylistversion;
+			uint8_t numlocalattachments;
+			uint16_t localattachmentindex;
+			uint16_t numlocalnodes;
+			uint16_t localnodenameindex;
+			uint16_t localNodeDataOffset;
+			uint16_t numikchains;
+			uint16_t ikchainindex;
+			uint16_t numtextures;
+			uint16_t textureindex;
+			uint16_t numskinref;
+			uint16_t numskinfamilies;
+			uint16_t skinindex;
+			uint16_t numbodyparts;
+			uint16_t bodypartindex;
+			uint16_t uiPanelCount;
+			uint16_t uiPanelOffset;
+			uint16_t numlocalposeparameters;
+			uint16_t localposeparamindex;
+			uint16_t surfacepropindex;
+			uint16_t keyvalueindex;
+			uint16_t virtualModel;
+			uint16_t meshCount;
+			uint16_t bonetablebynameindex;
+			uint16_t boneStateOffset;
+			uint16_t boneStateCount;
+			uint16_t groupHeaderOffset;
+			uint16_t groupHeaderCount;
+			uint16_t lodOffset;
+			uint16_t lodCount;
+			float fadeDistance;
+			float gathersize;
+			uint16_t numsrcbonetransform;
+			uint16_t srcbonetransformindex;
+			uint16_t sourceFilenameOffset;
+			uint16_t linearboneindex;
+			uint16_t procBoneCount;
+			uint16_t procBoneOffset;
+			uint16_t linearProcBoneOffset;
+			uint16_t boneFollowerCount;
+			uint16_t boneFollowerOffset;
+			uint16_t bvhOffset;
+			char bvhUnk[2];
+			uint16_t unkDataCount;
+			uint16_t unkDataOffset;
+			uint16_t unkStrcOffset;
+			int unk_E0;
+		};
+	}
+	namespace v19 {
+		struct studiohdr_t {
+			int32_t flags;
+			int32_t checksum;
+			uint16_t sznameindex;
+			char name[33];
+			uint8_t surfacepropLookup;
+			float mass;
+			int32_t contents;
+			uint16_t hitboxsetindex;
+			uint8_t numhitboxsets;
+			uint8_t illumpositionattachmentindex;
+			Vector3 illumposition;
+			Vector3 hull_min;
+			Vector3 hull_max;
+			Vector3 view_bbmin;
+			Vector3 view_bbmax;
+			uint16_t numbones;
+			uint16_t boneindex;
+			uint16_t boneDataOffset;
+			uint16_t numlocalseq;
+			uint16_t localseqindex;
+			uint16_t unk_7E[2];
+			char activitylistversion;
+			uint8_t numlocalattachments;
+			uint16_t localattachmentindex;
+			uint16_t numlocalnodes;
+			uint16_t localnodenameindex;
+			uint16_t localNodeDataOffset;
+			uint16_t numikchains;
+			uint16_t ikchainindex;
+			uint16_t numtextures;
+			uint16_t textureindex;
+			uint16_t numskinref;
+			uint16_t numskinfamilies;
+			uint16_t skinindex;
+			uint16_t numbodyparts;
+			uint16_t bodypartindex;
+			uint16_t uiPanelCount;
+			uint16_t uiPanelOffset;
+			uint16_t numlocalposeparameters;
+			uint16_t localposeparamindex;
+			uint16_t surfacepropindex;
+			uint16_t keyvalueindex;
+			uint16_t virtualModel;
+			uint16_t meshCount;
+			uint16_t bonetablebynameindex;
+			uint16_t boneStateOffset;
+			uint16_t boneStateCount;
+			uint16_t groupHeaderOffset;
+			uint16_t groupHeaderCount;
+			uint16_t lodOffset;
+			uint16_t lodCount;
+			float fadeDistance;
+			float gathersize;
+			uint16_t numsrcbonetransform;
+			uint16_t srcbonetransformindex;
+			uint16_t sourceFilenameOffset;
+			uint16_t linearboneindex;
+			uint16_t procBoneOffset;
+			uint16_t linearProcBoneOffset;
+			uint16_t boneFollowerCount;
+			uint16_t boneFollowerOffset;
+			uint16_t bvhOffset;
+			char bvhUnk[2];
+			uint16_t unkDataCount;
+			uint16_t unkDataOffset;
+			uint16_t unkStrcOffset;
+			int32_t unk_E0;
+		};
+
+		struct mstudiobonedata_t {
+			int16_t parent;
+			uint16_t unk_76;
+			int32_t flags;
+			uint8_t collisionIndex;
+			uint8_t proctype;
+			uint16_t procindex;
+			int32_t unk_C;
+		};
+
+		struct mstudiolinearbone_t {
+			uint16_t numbones;
+			uint16_t flagsindex;
+			uint16_t parentindex;
+			uint16_t posindex;
+			uint16_t quatindex;
+			uint16_t rotindex;
+			uint16_t posetoboneindex;
+			uint16_t qalignmentindex;
+			uint16_t scaleindex;
+		};
+	};
 }
 
 namespace r5anim {
@@ -926,10 +1116,6 @@ namespace r5anim {
 			short size : 13;
 			short flags : 3;
 		};
-
-		//struct boneflagarray {
-		//	char flag;
-		//};
 
 		struct studioanimvalue_ptr_t {
 			short offset : 13;
@@ -1077,20 +1263,397 @@ namespace r5anim {
 		};
 	}
 
+	namespace v10 {
+		struct mstudioanim_valueptr_t {
+			short offset : 13;
+			short flags : 3;
+			unsigned char axisIdx1;
+			unsigned char axisIdx2;
+		};
+
+		struct mstudioikrule_t {
+			int index;
+			int type;
+			int chain;
+			int bone;
+			int slot;
+			float height;
+			float radius;
+			float floor;
+			Vector3 pos;
+			Quaternion q;
+
+			float scale[6];
+			int sectionframes;
+
+			int compressedikerrorindex;
+			int iStart;
+			int ikerrorindex;
+			float start;
+			float peak;
+			float tail;
+			float end;
+			float contact;
+			float drop;
+			float top;
+			int szattachmentindex;
+			float endHeight;
+		};
+
+		struct mstudioanimdesc_t {
+			int baseptr;
+			int sznameindex;
+			float fps;
+			int flags;
+			int numframes;
+			int nummovements;
+			int movementindex;
+			int framemovementindex;
+			int animindex;
+			int numikrules;
+			int ikruleindex;
+			int sectionindex;
+			int sectionstallframes;
+			int sectionframes;
+			int unk1;
+			int unk2;
+		};
+
+		struct mstudioevent_t {
+			float cycle;
+			int	event;
+			int type;
+			char options[256];
+			int szeventindex;
+		};
+
+		struct mstudioevent_2_t {
+			float cycle;
+			int	event;
+			int type;
+			int unk1;
+			char options[256];
+			int szeventindex;
+		};
+
+		struct mstudioactivitymodifier_t {
+			int sznameindex;
+			bool negate;
+		};
+
+		struct mstudioseqdesc_t {
+			int baseptr;
+			int	szlabelindex;
+			int szactivitynameindex;
+			int flags;
+			int activity;
+			int actweight;
+			int numevents;
+			int eventindex;
+			Vector3 bbmin;
+			Vector3 bbmax;
+			int numblends;
+			int animindexindex;
+			int movementindex;
+			int groupsize[2];
+			int paramindex[2];
+			float paramstart[2];
+			float paramend[2];
+			int paramparent;
+			float fadeintime;
+			float fadeouttime;
+			int localentrynode;
+			int localexitnode;
+			int nodeflags;
+			float entryphase;
+			float exitphase;
+			float lastframe;
+			int nextseq;
+			int pose;
+			int numikrules;
+			int numautolayers;
+			int autolayerindex;
+			int weightlistindex;
+			int posekeyindex;
+			int numiklocks;
+			int iklockindex;
+			int keyvalueindex;
+			int keyvaluesize;
+			int cycleposeindex;
+			int activitymodifierindex;
+			int numactivitymodifiers;
+			int ikResetMask;
+			int unk1;
+			int weightFixupOffset;
+			int weightFixupCount;
+		};
+
+		//struct mstudioiklink_t {
+		//	int bone;
+		//	Vector3	kneeDir;
+		//};
+
+		//struct mstudioikchain_t {
+		//	int sznameindex;
+		//	int linktype;
+		//	int numlinks;
+		//	int linkindex;
+		//	float unk;
+		//};
+
+		//struct mstudioposeparamdesc_t {
+		//	int sznameindex;
+		//	int flags;
+		//	float start;
+		//	float end;
+		//	float loop;
+		//};
+
+		//struct studiohdr_t {
+		//	int id;
+		//	int version;
+		//	int checksum;
+		//	int sznameindex;
+		//	char name[64];
+		//	int length;
+		//	Vector3 eyeposition;
+		//	Vector3 illumposition;
+		//	Vector3 hull_min;
+		//	Vector3 hull_max;
+		//	Vector3 view_bbmin;
+		//	Vector3 view_bbmax;
+		//	int flags;
+		//	int numbones;
+		//	int boneindex;
+		//	int numbonecontrollers;
+		//	int bonecontrollerindex;
+		//	int numhitboxsets;
+		//	int hitboxsetindex;
+		//	int numlocalanim;
+		//	int localanimindex;
+		//	int numlocalseq;
+		//	int	localseqindex;
+		//	int activitylistversion;
+		//	int materialtypesindex;
+		//	int numtextures;
+		//	int textureindex;
+		//	int numcdtextures;
+		//	int cdtextureindex;
+		//	int numskinref;
+		//	int numskinfamilies;
+		//	int skinindex;
+		//	int numbodyparts;
+		//	int bodypartindex;
+		//	int numlocalattachments;
+		//	int localattachmentindex;
+		//	int numlocalnodes;
+		//	int localnodeindex;
+		//	int localnodenameindex;
+		//	int unkNodeCount;
+		//	int nodeDataOffsetsOffset;
+		//	int meshOffset;
+		//	int deprecated_numflexcontrollers;
+		//	int deprecated_flexcontrollerindex;
+		//	int deprecated_numflexrules;
+		//	int deprecated_flexruleindex;
+		//	int numikchains;
+		//	int ikchainindex;
+		//	int uiPanelCount;
+		//	int uiPanelOffset;
+		//	int numlocalposeparameters;
+		//	int localposeparamindex;
+		//	int surfacepropindex;
+		//	int keyvalueindex;
+		//	int keyvaluesize;
+		//	int numlocalikautoplaylocks;
+		//	int localikautoplaylockindex;
+		//	float mass;
+		//	int contents;
+		//	int numincludemodels;
+		//	int includemodelindex;
+		//	int virtualModel;
+		//	int bonetablebynameindex;
+		//	char constdirectionallightdot;
+		//	char rootLOD;
+		//	char numAllowedRootLODs;
+		//	char unused;
+		//	float defaultFadeDist;
+		//	float gathersize;
+		//	int deprecated_numflexcontrollerui;
+		//	int deprecated_flexcontrolleruiindex;
+		//	float flVertAnimFixedPointScale;
+		//	int surfacepropLookup;
+		//	int sourceFilenameOffset;
+		//	int numsrcbonetransform;
+		//	int srcbonetransformindex;
+		//	int	illumpositionattachmentindex;
+		//	int linearboneindex;
+		//	int procBoneCount;
+		//	int procBoneTableOffset;
+		//	int linearProcBoneOffset;
+		//	int deprecated_m_nBoneFlexDriverCount;
+		//	int deprecated_m_nBoneFlexDriverIndex;
+		//	int deprecated_m_nPerTriAABBIndex;
+		//	int deprecated_m_nPerTriAABBNodeCount;
+		//	int deprecated_m_nPerTriAABBLeafCount;
+		//	int deprecated_m_nPerTriAABBVertCount;
+		//	int unkStringOffset;
+		//	int vtxOffset;
+		//	int vvdOffset;
+		//	int vvcOffset;
+		//	int phyOffset;
+		//	int vtxSize;
+		//	int vvdSize;
+		//	int vvcSize;
+		//	int phySize;
+		//	int deprecated_unkOffset;
+		//	int deprecated_unkCount;
+		//	int boneFollowerCount;
+		//	int boneFollowerOffset;
+		//	Vector3 mins;
+		//	Vector3 maxs;
+		//	int unk3_v54[3];
+		//	int bvhOffset;
+		//	short unk4_v54[2];
+		//	int vvwOffset;
+		//	int vvwSize;
+		//};
+	}
+
+	namespace v11 {
+		struct mstudioseqdesc_t {
+			uint16_t szlabelindex;
+			uint16_t szactivitynameindex;
+			int flags;
+			uint16_t activity;
+			uint16_t actweight;
+			uint16_t numevents;
+			uint16_t eventindex;
+			Vector3 bbmin;
+			Vector3 bbmax;
+			uint16_t numblends;
+			uint16_t animindexindex;
+			short paramindex[2];
+			float paramstart[2];
+			float paramend[2];
+			float fadeintime;
+			float fadeouttime;
+			uint16_t localentrynode;
+			uint16_t localexitnode;
+			uint16_t numikrules;
+			uint16_t numautolayers;
+			uint16_t autolayerindex;
+			uint16_t weightlistindex;
+			uint8_t groupsize[2];
+			uint16_t posekeyindex;
+			uint16_t numiklocks;
+			uint16_t iklockindex;
+			uint16_t unk_5C;
+			uint16_t cycleposeindex;
+			uint16_t activitymodifierindex;
+			uint16_t numactivitymodifiers;
+			int ikResetMask;
+			int unk1;
+			uint16_t weightFixupOffset;
+			uint16_t weightFixupCount;
+		};
+
+		struct mstudioautolayer_t {
+			uint64_t guidSequence;
+			int iPose;
+			int flags;
+			float start;
+			float peak;
+			float tail;
+			float end;
+		};
+
+		struct mstudioactivitymodifier_t {
+			uint16_t sznameindex;
+			bool negate;
+			char pad;
+		};
+
+		struct mstudioseqweightfixup_t {
+			float unk_0;
+			int bone;
+			float unk_8;
+			float unk_C;
+			float unk_10;
+			float unk_14;
+		};
+
+		struct mstudioikrule_t {
+			short chain;
+			short bone;
+			char type;
+			char slot;
+			uint16_t sectionframes;
+			float scale[6];
+			uint16_t compressedikerrorindex;
+			short iStart;
+			uint16_t ikerrorindex;
+			uint16_t szattachmentindex;
+			float start;
+			float peak;
+			float tail;
+			float end;
+			float contact;
+			float drop;
+			float top;
+			float height;
+			float endHeight;
+			float radius;
+			float floor;
+			Vector3 pos;
+			Quaternion q;
+		};
+
+		struct mstudioframemovement_t {
+			float scale[4];
+			int sectionframes;
+		};
+
+		struct mstudioevent_t {
+			float cycle;
+			int	event;
+			int32_t type;
+			int32_t unk;
+			int16_t optionsindex;
+			int16_t szeventindex;
+		};
+
+		struct mstudioanimdesc_t {
+			float fps;
+			int flags;
+			int numframes;
+			uint16_t sznameindex;
+			uint16_t framemovementindex;
+			int animindex;
+			uint16_t numikrules;
+			uint16_t ikruleindex;
+			int64_t sectionDataExternal;
+			uint16_t unk1;
+			uint16_t sectionindex;
+			uint16_t sectionstallframes;
+			uint16_t sectionframes;
+		};
+	}
+
 	namespace v12 {
 		struct mstudioseqdesc_t
 		{
-			short szlabelindex;
-			short szactivitynameindex;
+			uint16_t szlabelindex;
+			uint16_t szactivitynameindex;
 			int flags;
 			short activity;
 			short actweight;
 			short numevents;
-			short eventindex;
+			uint16_t eventindex;
 			Vector3 bbmin;
 			Vector3 bbmax;
 			short numblends;
-			short animindexindex;
+			uint16_t animindexindex;
 			short paramindex[2];
 			float paramstart[2];
 			float paramend[2];
@@ -1100,19 +1663,19 @@ namespace r5anim {
 			short localexitnode;
 			short numikrules;
 			short numautolayers;
-			unsigned short autolayerindex;
-			unsigned short weightlistindex;
+			uint16_t autolayerindex;
+			uint16_t weightlistindex;
 			byte groupsize[2];
-			unsigned short posekeyindex;
+			uint16_t posekeyindex;
 			short numiklocks;
-			short iklockindex;
+			uint16_t iklockindex;
 			unsigned short unk_5C;
-			short cycleposeindex;
-			short activitymodifierindex;
+			uint16_t cycleposeindex;
+			uint16_t activitymodifierindex;
 			short numactivitymodifiers;
 			int ikResetMask;
 			int unk1;
-			unsigned short unkindex;
+			uint16_t unkindex;
 			short unkcount;
 		};
 
@@ -1152,14 +1715,14 @@ namespace r5anim {
 			float fps;
 			int flags;
 			int numframes;
-			short sznameindex;
-			unsigned short framemovementindex;
+			uint16_t sznameindex;
+			uint16_t framemovementindex;
 			int animindex;
 			short numikrules;
-			unsigned short ikruleindex;
+			uint16_t ikruleindex;
 			__int64 unk2;
 			uint16_t unk1;
-			short sectionindex;
+			uint16_t sectionindex;
 			short sectionstallframes;
 			short sectionframes;
 		};
@@ -1180,28 +1743,28 @@ namespace r5anim {
 			short szeventindex;
 		};
 	}
+
 	namespace v121 {
-		struct mstudioanimdesc_t
-		{
-			float fps; 	
-			int flags ;
+		struct mstudioanimdesc_t {
+			float fps;
+			int flags;
 			int numframes;
 			uint16_t sznameindex;
-			uint16_t framemovementindex; 
+			uint16_t framemovementindex;
 			uint16_t numikrules;
 			uint8_t unused_12[4];
-			uint16_t ikruleindex; 
+			uint16_t ikruleindex;
 			uint64_t animDataAsset;
 			int64_t sectionDataExternal;
 			uint16_t unk1;
 			uint16_t sectionindex;
-			uint16_t sectionstallframes; 
+			uint16_t sectionstallframes;
 			uint16_t sectionframes;
 		};
 	}
 }
-namespace temp {
 
+namespace temp {
 	struct ikchain_t
 	{
 		std::string name;

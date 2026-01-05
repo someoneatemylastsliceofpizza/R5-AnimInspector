@@ -10,7 +10,7 @@ R5-AnimInspector.exe <parent directory> [-i <in assets season>]
 ```
 
 >**Supported seasons**\
-[ 3, 4, 25, 26, 27 ]
+>Season 3, 9-27
 
 >**Folder Structure**\
 >├── model.rrig         # Rig file (Optional) (must be in parent directory)\

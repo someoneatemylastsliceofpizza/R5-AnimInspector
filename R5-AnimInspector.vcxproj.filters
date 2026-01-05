@@ -16,6 +16,9 @@
     <Filter Include="Source Files\assets">
       <UniqueIdentifier>{8fd2f094-ed01-45e2-a261-b93d248f8f82}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{4a557782-2279-4f4b-b279-5dab81ef4536}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="R5-AnimInspector.cpp">
@@ -23,6 +26,9 @@
     </ClCompile>
     <ClCompile Include="src\mdl\qc.cpp">
       <Filter>Source Files\assets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pch.cpp">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -33,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\mdl\qc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

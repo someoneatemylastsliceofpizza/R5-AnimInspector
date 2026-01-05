@@ -1,9 +1,4 @@
-#include <iostream>
-#include <fstream>
-#include <filesystem>
-#include <cstdlib>
-#include <define.h>
-#include <map>
+#include <pch.h>
 
 namespace qc
 {
@@ -152,7 +147,6 @@ namespace qc
 		std::vector<bonedata> bones;
 		std::vector<bodypart> bodyparts;
 		std::vector<poseparam> poseparam;
-		//std::vector<std::string> nodename;
 		std::vector<std::string> animnames;
 		std::vector<temp::ikchain_t> ikchain;
 		std::vector<Animation> animations;
@@ -488,19 +482,20 @@ namespace qc
 	};
 }
 
-
 std::string getName(std::string anim_name);
-//
-void readRrig_v10(std::string path, qc::QCModel& modelOut);
-void readRmdl_v10(std::string path, qc::QCModel& modelOut);
-void readRseq_v7(const std::string in_dir, const std::vector<std::string>& paths, qc::QCModel& modelOut);
-//
-void readRrig_v13(std::string path, qc::QCModel& modelOut);
-void readRmdl_v121(std::string path, qc::QCModel& modelOut);
-//void readRseq_v7(const std::string in_dir, const std::vector<std::string>& paths, qc::QCModel& modelOut);
-//
-void readRrig_v16(std::string path, qc::QCModel& modelOut);
-void readRmdl_v16(std::string path, qc::QCModel& modelOut);
-void readRseq_v12(const std::string in_dir, const std::vector<std::string>& paths, qc::QCModel& modelOut);
-//
-void readRseq_v121(const std::string in_dir, const std::vector<std::string>& paths, qc::QCModel& modelOut);
+
+void ParseRRIG_v10(std::string path, qc::QCModel& modelOut);
+void ParseRRIG_v121(std::string path, qc::QCModel& modelOut);
+void ParseRRIG_v13(std::string path, qc::QCModel& modelOut);
+void ParseRRIG_v14(std::string path, qc::QCModel& modelOut);
+void ParseRRIG_v16(std::string path, qc::QCModel& modelOut);
+void ParseRRIG_v17(std::string path, qc::QCModel& modelOut);
+void ParseRRIG_v18(std::string path, qc::QCModel& modelOut);
+void ParseRRIG_v19(std::string path, qc::QCModel& modelOut);
+void ParseRRIG_v191(std::string path, qc::QCModel& modelOut);
+
+void ParseRSEQ_v7(const std::string in_dir, const std::vector<std::string>& paths, qc::QCModel& modelOut);
+void ParseRSEQ_v10(const std::string in_dir, const std::vector<std::string>& paths, qc::QCModel& modelOut);
+void ParseRSEQ_v11(const std::string in_dir, const std::vector<std::string>& paths, qc::QCModel& modelOut);
+void ParseRSEQ_v12(const std::string in_dir, const std::vector<std::string>& paths, qc::QCModel& modelOut);
+void ParseRSEQ_v121(const std::string in_dir, const std::vector<std::string>& paths, qc::QCModel& modelOut);
